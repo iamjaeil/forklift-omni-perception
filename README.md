@@ -1,4 +1,5 @@
-# OODIS: Omnidirectional Object Detection and Tracking for Industrial Safety
+# Forklift Omni Perception: 360° 3D Object Detection and Tracking for Industrial Safety
+
 <p align="center">
   <img alt="Python" src="https://img.shields.io/badge/Python-3.8-blue">
   <img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-1.12.1-red">
@@ -7,168 +8,198 @@
 </p>
 
 <p align="center">
-  <img src ="src/assets/camera_night.gif"> <img src ="src/assets/Lidar_nigh.gif">
+  <img src="src/assets/camera_night.gif">
+  <img src="src/assets/Lidar_nigh.gif">
 </p>
 
-
 ## 📑 Overview
-- [Introduction](#-introduction)  
-- [Key Features](#-key-features)  
-- [Used Sensor](#-used-sensor)  
-- [Pineline](#-pineline)  
-&nbsp;&nbsp;&nbsp;[1. 2D Detection (DINO)](#1-2d-detection-dino)  
-&nbsp;&nbsp;&nbsp;[2. Tracking (OC-SORT)](#2-tracking-oc-sort)  
-&nbsp;&nbsp;&nbsp;[3. 3D Detection (Ultratics ROS)](#3-3d-detection-ultratics-ros)  
-- [Results](#-results)  
-- [Getting Started](#-getting-started)  
-&nbsp;&nbsp;&nbsp;[1. Installation](#1-installation)  
-&nbsp;&nbsp;&nbsp;[2. How to run](#2-how-to-run)  
-&nbsp;&nbsp;&nbsp;[3. Docker](#3-docker)  
+
+- [Introduction](#-introduction)
+- [Key Features](#-key-features)
+- [Used Sensors](#-used-sensors)
+- [Pipeline](#-pipeline)
+  - [1. 2D Detection (DINO)](#1-2d-detection-dino)
+  - [2. Tracking (OC-SORT)](#2-tracking-oc-sort)
+  - [3. 3D Detection (Ultralytics ROS)](#3-3d-detection-ultralytics-ros)
+- [Results](#-results)
+- [Getting Started](#-getting-started)
+  - [1. Installation](#1-installation)
+  - [2. How to Run](#2-how-to-run)
+  - [3. Docker](#3-docker)
 - [References](#-references)
+
 ## 🚀 Introduction
+
 <img width="677" height="913" alt="image" src="https://github.com/user-attachments/assets/2cdc362f-414c-4fc1-a6e3-54a5724ca0b0" />
 
+**Forklift Omni Perception** is a 360-degree 3D perception system designed for autonomous forklifts and industrial safety applications.
 
-
-OODIS는 360° 카메라와 360° LiDAR를 결합한 전방위 감지 시스템을 제공하며,
-ERP 기반 2D 투영과 DINO + OC-SORT로 안정적인 탐지·추적을 수행한다.
-지게차와 로봇 모두에 장착 가능하며, 실내·실외·공장 환경에서 일관된 성능을 보였다.
+The system combines a 360° camera and a 360° LiDAR sensor to detect, track, and localize objects in all directions. It performs robust object detection and tracking using ERP-based 2D projection, DINO, and OC-SORT. The system can be mounted on forklifts or mobile robots and has been evaluated in indoor, outdoor, and real-world industrial factory environments.
 
 ## 🔑 Key Features
-- **360° Full Surround Perception** <br>
-&nbsp;&nbsp;&nbsp;◦ 단일 360° 카메라 + 360° LiDAR로 전 방향 감지 <br>
-&nbsp;&nbsp;&nbsp;◦ 추가적인 센서 마운트 고민 없이 플랫폼 독립적 구성
 
-- **ERP 기반 고효율 포인트 매칭**<br>
-&nbsp;&nbsp;&nbsp;◦ 3D LiDAR 포인트를 ERP로 투영<br>
-&nbsp;&nbsp;&nbsp;◦ 계산량 감소 : 복잡한 3D-3D 매칭 대신 2D bbox 조건 기반 매칭<br>
+- **360° Full Surround Perception**  
+  ◦ Detects objects in all directions using a single 360° camera and 360° LiDAR  
+  ◦ Provides a platform-independent perception setup without requiring complex additional sensor configurations  
 
-- **Robust Object Detection**<br>
-&nbsp;&nbsp;&nbsp; ◦ DINO: 왜곡이 있는 ERP 이미지에서도 강건한 특징 추출<br>
-&nbsp;&nbsp;&nbsp; ◦ OC-SORT: 빠르고 안정적인 multi-object tracking 제공<br>
+- **Efficient ERP-Based Point Matching**  
+  ◦ Projects 3D LiDAR points onto an equirectangular projection image  
+  ◦ Reduces computational cost by replacing complex 3D-to-3D matching with 2D bounding-box-based point association  
 
-- **Real-World Industrial Evaluation**<br>
-&nbsp;&nbsp;&nbsp;◦ 실제 CJ 산업 공장, 학교 실내, 야간 실외 환경에서 테스트<br>
-&nbsp;&nbsp;&nbsp;◦ AP, MOTA, IDF1 기반 정량 평가<br>
-&nbsp;&nbsp;&nbsp;◦ 위험도 시각화 기반 실사용 가능성 검증
+- **Robust Object Detection and Tracking**  
+  ◦ Uses DINO for robust object detection on distorted ERP images  
+  ◦ Uses OC-SORT for fast and stable multi-object tracking across frames  
 
-## 🤖 Used Sensor
+- **Real-World Industrial Evaluation**  
+  ◦ Tested in a real CJ industrial factory, indoor campus environments, and outdoor night scenes  
+  ◦ Quantitatively evaluated using AP, MOTA, and IDF1  
+  ◦ Demonstrates practical applicability through risk-level visualization  
+
+## 🤖 Used Sensors
 
 <img width="477" height="634" alt="image" src="https://github.com/user-attachments/assets/d494772a-46fe-4727-bab7-867aad4ee700" />
+
 <br>
 
-**1. Ricoh Theta Z1 (360° Camera)**
-<br>
-**2. Livox Mid-360 (360° LiDAR)**
-<br>
+**1. Ricoh Theta Z1 360° Camera**  
+**2. Livox Mid-360 LiDAR**  
 **3. Custom Integrated Sensor Mount**
-## 🛠 Pineline
+
+## 🛠 Pipeline
+
 <img width="1694" height="567" alt="image" src="https://github.com/user-attachments/assets/305b65ba-ad3f-4851-ba96-387f88517d26" />
 
-
 ### 1. 2D Detection (DINO)
-- ERP로 변환된 2D 이미지를 입력 받아 사람 bbox 검출
-- Self-attention을 활용해 왜곡에 강한 전역 객체 특징 추출
-  
+
+- Takes ERP-projected 2D images as input
+- Detects human bounding boxes from omnidirectional camera images
+- Extracts robust global object features using self-attention, even under ERP distortion
+
 ### 2. Tracking (OC-SORT)
-- DINO에서 검출된 bbox를 입력받아 프레임 간 ID 유지
-- 공장 환경의 많은 가림(occlusion)을 고려하여 강건한 추적
-  
-### 3. 3D Detection (Ultratics ROS)
-- 라이다 포인트를 카메라 프레임으로 변환 (extrinsic 사용)
-- ERP(equirectangular)로 3D → 2D 매핑
-- 포인트(u, v)가 bbox 내부인지 여부로 매칭
--  매칭된 포인트만 다시 3D 좌표로 복원 → 객체까지 거리 계산
-  
+
+- Takes bounding boxes detected by DINO as input
+- Maintains consistent object IDs across frames
+- Provides robust tracking performance in factory environments with frequent occlusion
+
+### 3. 3D Detection (Ultralytics ROS)
+
+- Transforms LiDAR points into the camera frame using extrinsic calibration
+- Projects 3D LiDAR points onto the ERP image plane
+- Matches projected points by checking whether each point `(u, v)` lies inside a detected bounding box
+- Restores matched points to 3D coordinates
+- Estimates the distance from the forklift or robot to each detected object
+
 ## 📊 Results
+
 <img width="1126" height="607" alt="image" src="https://github.com/user-attachments/assets/5f469dd9-f303-4ff2-adc6-c4d90d9024e8" />
+
 <br>
 
 ### Detection Performance (AP / CD)
-| Environment | AP    | CD(px) |
-|:-----------:|:-----:|:------:|
-| Factory     | 0.588 | 24     |
-| Indoor      | **0.700** | 27 |
-| Outdoor(Night)| 0.095 | 30   |
+
+| Environment | AP | CD(px) |
+|:---:|:---:|:---:|
+| Factory | 0.588 | 24 |
+| Indoor | **0.700** | 27 |
+| Outdoor Night | 0.095 | 30 |
 
 ### Tracking Performance (MOTA / IDF1)
-| Environment | MOTA    | IDF1 |
-|:-----------:|:-----:|:------:|
-| Factory       | **89.1** | 83.5    |
-| Indoor        | 76.7 | **84.9**    |
-| Outdoor(Night)| 53.4 | 67.2  |
 
+| Environment | MOTA | IDF1 |
+|:---:|:---:|:---:|
+| Factory | **89.1** | 83.5 |
+| Indoor | 76.7 | **84.9** |
+| Outdoor Night | 53.4 | 67.2 |
 
 ## 🔧 Getting Started
 
 ### 1. Installation
 
-#### 1. RTX 30 Series
-**test : Python=3.8, PyTorch=1.12.1, Torchvision=0.13.1, CUDA=11.6**
-<br>
-**i. Setting**
-```
+#### RTX 30 Series
+
+Tested environment:
+
+- Python 3.8
+- PyTorch 1.12.1
+- Torchvision 0.13.1
+- CUDA 11.6
+
+#### i. Environment Setup
+
+```bash
 pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 \
   --extra-index-url https://download.pytorch.org/whl/cu116
 ```
 
-**ii. Build package**
-```
+#### ii. Build Package
+
+```bash
 git clone https://github.com/happious/3d_detection
 cd 3d_detection
 pip install -r requirements.txt
 ```
-```
+
+```bash
 cd src/ultralytics_ros/DINO
 mkdir weights
 mv ~/Downloads/checkpoint0029_4scale_swin.pth ~/3d_detection/src/ultralytics_ros/DINO/weights/
 ```
-```
+
+```bash
 cd ..
 mkdir bag
 mv ~/your.bag ~/3d_detection/src/ultralytics_ros/bag
 ```
 
-**iii. Catkin make**
-```
+#### iii. Catkin Build
+
+```bash
 cd ~/3d_detection
 catkin_make
 source devel/setup.bash
 ```
+
 ---
 
-### 2. How to run
-```
+### 2. How to Run
+
+```bash
 roslaunch ultralytics_ros tracking.launch
 ```
-```
+
+```bash
 roslaunch ultralytics_ros tracker_with_cloud_ros1.launch
 ```
+
 ---
 
 ### 3. Docker
 
-#### 3D Detection + DINO + OC-SORT (ROS Noetic + Docker)
-Ubuntu 20.04 · ROS Noetic · PyTorch 1.12.1 + cu116  
+#### 3D Detection + DINO + OC-SORT
 
+Environment:
 
-**3.1 Create Workspace (Host)**
+- Ubuntu 20.04
+- ROS Noetic
+- Docker
+- PyTorch 1.12.1
+- CUDA 11.6
+
+#### 3.1 Create Workspace on Host
 
 ```bash
 mkdir -p ~/your_ws
 cd ~/your_ws
 ```
 
-
-**3.2 Clone 3d_detection Source (Host)**
+#### 3.2 Clone 3D Detection Source on Host
 
 ```bash
 cd ~/your_ws
 git clone https://github.com/happious/3d_detection.git
 ```
 
-
-**3.3 Prepare DINO Weights (Host)**
+#### 3.3 Prepare DINO Weights on Host
 
 ```bash
 mkdir -p ~/your_ws/3d_detection/src/ultralytics_ros/DINO/weights
@@ -176,9 +207,7 @@ cp ~/Downloads/checkpoint0011_4scale.pth \
    ~/your_ws/3d_detection/src/ultralytics_ros/DINO/weights/
 ```
 
-
-
-**3.4 Prepare Bag File (Host)**
+#### 3.4 Prepare Bag File on Host
 
 ```bash
 mkdir -p ~/your_ws/3d_detection/src/ultralytics_ros/bag
@@ -186,33 +215,34 @@ cp ~/CJ.bag \
    ~/your_ws/3d_detection/src/ultralytics_ros/bag/
 ```
 
+#### 3.5 Create Dockerfile on Host
 
-**3.5 Create Dockerfile (Host)**
+Create the Dockerfile at:
 
-Create the file: ~/your_ws/Dockerfile
+```bash
+~/your_ws/Dockerfile
+```
+
+Move the Dockerfile:
 
 ```bash
 mv ~/your_ws/3d_detection/docker/Dockerfile ~/your_ws/Dockerfile
 ```
 
-
-**3.6 Allow x11(Host)**
+#### 3.6 Allow X11 on Host
 
 ```bash
 xhost +local:docker
 ```
 
-
-
-**3.7 Build Docker Image (Host)**
+#### 3.7 Build Docker Image on Host
 
 ```bash
 cd ~/your_ws
 docker build -t 3d_detection_dino .
 ```
 
-
-**3.8 Run Container with GUI + Volume Mount**
+#### 3.8 Run Container with GUI and Volume Mount
 
 ```bash
 docker run --gpus all -it \
@@ -223,7 +253,9 @@ docker run --gpus all -it \
   --env="QT_X11_NO_MITSHM=1" \
   3d_detection_dino
 ```
-**3.9 Build DINO CUDA Ops**
+
+#### 3.9 Build DINO CUDA Ops
+
 ```bash
 cd /opt/catkin_ws/src/3d_detection/src/ultralytics_ros/DINO/models/dino/ops
 
@@ -238,7 +270,7 @@ export CUDA_HOME=/usr/local/cuda
 FORCE_CUDA=1 python3 setup.py build_ext --inplace
 FORCE_CUDA=1 python3 -m pip install .
 
-# import test
+# Import test
 python3 - << 'EOF'
 import torch
 import MultiScaleDeformableAttention as MSDA
@@ -248,35 +280,31 @@ print("MSDA:", MSDA)
 EOF
 ```
 
-
-**3.10 Launch**
+#### 3.10 Launch
 
 **Terminal 1**
+
 ```bash
 cd /opt/catkin_ws
 roslaunch ultralytics_ros tracking.launch
 ```
 
 **Terminal 2**
+
 ```bash
 docker exec -it dino_container bash
 roslaunch ultralytics_ros tracker_with_cloud_ros1.launch
 ```
 
-
 **Terminal 3**
+
 ```bash
 docker exec -it dino_container bash
 rviz
 ```
 
-
-
-
-
 ## 📕 References
-[1] DINO : https://github.com/IDEA-Research/DINO
-<br>
-[2] OC-SORT : https://github.com/noahcao/OC_SORT
-<br>
-[3] ultralytics_ros : https://github.com/Alpaca-zip/ultralytics_ros
+
+[1] DINO: https://github.com/IDEA-Research/DINO  
+[2] OC-SORT: https://github.com/noahcao/OC_SORT  
+[3] Ultralytics ROS: https://github.com/Alpaca-zip/ultralytics_ros
