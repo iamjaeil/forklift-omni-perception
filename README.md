@@ -32,7 +32,7 @@
 
 <img width="677" height="913" alt="image" src="https://github.com/user-attachments/assets/2cdc362f-414c-4fc1-a6e3-54a5724ca0b0" />
 
-**Forklift Omni Perception** is a 360-degree 3D perception system designed for autonomous forklifts and industrial safety applications.
+**Forklift Omni Perception** is a 360-degree 3D perception system designed for autonomous forklifts and industrial safety applications
 
 The system combines a 360° camera and a 360° LiDAR sensor to detect, track, and localize objects in all directions. It performs robust object detection and tracking using ERP-based 2D projection, DINO, and OC-SORT. The system can be mounted on forklifts or mobile robots and has been evaluated in indoor, outdoor, and real-world industrial factory environments.
 
